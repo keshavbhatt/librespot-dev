@@ -1,4 +1,4 @@
-name: librespot
+name: librespot-dev
 base: core18
 version: git
 summary: Librespot is an open source client library for Spotify
