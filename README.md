@@ -13,7 +13,7 @@ This repo contains snap build recipe for librespot rust app. The snap is built f
 
 ﻿Nightly Build on any [snapd](https://docs.snapcraft.io/installing-snapd) enabled Linux Distribution can be installed using:
 
-﻿[![librespot](https://snapcraft.io//librespot-dev/badge.svg)](https://snapcraft.io/pixelfx) [![librespot](https://snapcraft.io//librespot-dev/trending.svg?name=0)](https://snapcraft.io/librespot-dev)
+﻿[![librespot](https://snapcraft.io//librespot-dev/badge.svg)](https://snapcraft.io/librespot-dev) [![librespot](https://snapcraft.io//librespot-dev/trending.svg?name=0)](https://snapcraft.io/librespot-dev)
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/librespot-dev)
 
