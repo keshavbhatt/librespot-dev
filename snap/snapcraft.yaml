@@ -1,0 +1,62 @@
+name: librespot
+base: core18
+version: git
+summary: Librespot is an open source client library for Spotify
+description: |
+  Librespot is an open source client library for Spotify written in Rust. It enables    
+  applications to use Spotify's service to control and play music via various backends, 
+  and to act as a Spotify Connect receiver. It is an alternative to the official and now 
+  deprecated closed-source libspotify. Additionally, it will provide extra features which 
+  are not available in the official library.
+grade: stable
+confinement: strict
+
+#alsa fix from https://snapcraft-alsa.readthedocs.io/en/latest/snapcraft_usage.html
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
+    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
+  /usr/share/alsa:
+    bind: $SNAP/usr/share/alsa
+
+apps:
+  librespot:
+    command-chain: ["snap/command-chain/alsa-launch"]
+    environment:
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      ALWAYS_USE_PULSEAUDIO: '1'
+      LC_ALL: "C.UTF-8"
+    command: librespot
+    plugs:
+      - network
+      - network-bind
+      - unity7
+      - audio-playback
+      - pulseaudio #works without it but keeping it
+      - alsa #works without it but keeping it
+
+
+parts:
+#issue with alsa > ALSA lib conf.c:3916:(snd_config_update_r) Cannot access file /usr/share/alsa/alsa.conf
+#alsa fix from https://snapcraft-alsa.readthedocs.io/en/latest/snapcraft_usage.html
+  alsa-mixin:
+    plugin: dump
+    source: https://github.com/diddlesnaps/snapcraft-alsa.git
+    source-subdir: snapcraft-assets
+    build-packages:
+      - libasound2-dev
+    stage-packages:
+      - libasound2
+      - libasound2-plugins
+#      - yad   #we are using ALWAYS_USE_PULSEAUDIO: '1' env var, so do not need yad prompts. Also adding this increasing size of snap by 38+Mb
+      
+  librespot:
+    plugin: rust
+    source: https://github.com/librespot-org/librespot.git
+    source-branch: dev
+    source-depth: 1 #git shallow clone
+    build-packages:
+      - libasound2-dev
+      - build-essential
+      - pkg-config
+    after:
+      - alsa-mixin
